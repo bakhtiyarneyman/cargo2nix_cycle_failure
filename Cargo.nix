@@ -24,7 +24,7 @@ args@{
   ignoreLockHash,
 }:
 let
-  nixifiedLockHash = "9c88bac27708146d2b054240b23dcb814c762e8e3e5663d3e90230703b6eb44e";
+  nixifiedLockHash = "2ae5389a93b2d8abb2bdd2154aa38e9a439281089dbc2ba9eab28613323bff41";
   workspaceSrc = if args.workspaceSrc == null then ./. else args.workspaceSrc;
   currentLockHash = builtins.hashFile "sha256" (workspaceSrc + /Cargo.lock);
   lockHashIgnored = if ignoreLockHash
@@ -86,11 +86,15 @@ in
     src = fetchCratesIo { inherit name version; sha256 = "71938f30533e4d95a6d17aa530939da3842c2ab6f4f84b9dae68447e4129f74a"; };
   });
   
-  "registry+https://github.com/rust-lang/crates.io-index".async-graphql."7.0.1" = overridableMkRustCrate (profileName: rec {
+  "git+https://github.com/async-graphql/async-graphql".async-graphql."7.0.1" = overridableMkRustCrate (profileName: rec {
     name = "async-graphql";
     version = "7.0.1";
-    registry = "registry+https://github.com/rust-lang/crates.io-index";
-    src = fetchCratesIo { inherit name version; sha256 = "b16926f97f683ff3b47b035cc79622f3d6a374730b07a5d9051e81e88b5f1904"; };
+    registry = "git+https://github.com/async-graphql/async-graphql";
+    src = fetchCrateGit {
+      url = https://github.com/async-graphql/async-graphql;
+      name = "async-graphql";
+      version = "7.0.1";
+      rev = "e99a6bb8af0313fdf470e605ba3ccd30a2988179";};
     features = builtins.concatLists [
       [ "default" ]
       [ "email-validator" ]
@@ -101,9 +105,9 @@ in
       [ "tempfile" ]
     ];
     dependencies = {
-      async_graphql_derive = (buildRustPackages."registry+https://github.com/rust-lang/crates.io-index".async-graphql-derive."7.0.1" { profileName = "__noProfile"; }).out;
-      async_graphql_parser = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".async-graphql-parser."7.0.1" { inherit profileName; }).out;
-      async_graphql_value = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".async-graphql-value."7.0.1" { inherit profileName; }).out;
+      async_graphql_derive = (buildRustPackages."git+https://github.com/async-graphql/async-graphql".async-graphql-derive."7.0.1" { profileName = "__noProfile"; }).out;
+      async_graphql_parser = (rustPackages."git+https://github.com/async-graphql/async-graphql".async-graphql-parser."7.0.1" { inherit profileName; }).out;
+      async_graphql_value = (rustPackages."git+https://github.com/async-graphql/async-graphql".async-graphql-value."7.0.1" { inherit profileName; }).out;
       async_stream = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".async-stream."0.3.5" { inherit profileName; }).out;
       async_trait = (buildRustPackages."registry+https://github.com/rust-lang/crates.io-index".async-trait."0.1.77" { profileName = "__noProfile"; }).out;
       base64 = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".base64."0.13.1" { inherit profileName; }).out;
@@ -129,14 +133,18 @@ in
     };
   });
   
-  "registry+https://github.com/rust-lang/crates.io-index".async-graphql-derive."7.0.1" = overridableMkRustCrate (profileName: rec {
+  "git+https://github.com/async-graphql/async-graphql".async-graphql-derive."7.0.1" = overridableMkRustCrate (profileName: rec {
     name = "async-graphql-derive";
     version = "7.0.1";
-    registry = "registry+https://github.com/rust-lang/crates.io-index";
-    src = fetchCratesIo { inherit name version; sha256 = "a6a7349168b79030e3172a620f4f0e0062268a954604e41475eff082380fe505"; };
+    registry = "git+https://github.com/async-graphql/async-graphql";
+    src = fetchCrateGit {
+      url = https://github.com/async-graphql/async-graphql;
+      name = "async-graphql-derive";
+      version = "7.0.1";
+      rev = "e99a6bb8af0313fdf470e605ba3ccd30a2988179";};
     dependencies = {
       inflector = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".Inflector."0.11.4" { inherit profileName; }).out;
-      async_graphql_parser = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".async-graphql-parser."7.0.1" { inherit profileName; }).out;
+      async_graphql_parser = (rustPackages."git+https://github.com/async-graphql/async-graphql".async-graphql-parser."7.0.1" { inherit profileName; }).out;
       darling = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".darling."0.20.4" { inherit profileName; }).out;
       proc_macro_crate = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".proc-macro-crate."1.3.1" { inherit profileName; }).out;
       proc_macro2 = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".proc-macro2."1.0.78" { inherit profileName; }).out;
@@ -147,24 +155,32 @@ in
     };
   });
   
-  "registry+https://github.com/rust-lang/crates.io-index".async-graphql-parser."7.0.1" = overridableMkRustCrate (profileName: rec {
+  "git+https://github.com/async-graphql/async-graphql".async-graphql-parser."7.0.1" = overridableMkRustCrate (profileName: rec {
     name = "async-graphql-parser";
     version = "7.0.1";
-    registry = "registry+https://github.com/rust-lang/crates.io-index";
-    src = fetchCratesIo { inherit name version; sha256 = "58fdc0adf9f53c2b65bb0ff5170cba1912299f248d0e48266f444b6f005deb1d"; };
+    registry = "git+https://github.com/async-graphql/async-graphql";
+    src = fetchCrateGit {
+      url = https://github.com/async-graphql/async-graphql;
+      name = "async-graphql-parser";
+      version = "7.0.1";
+      rev = "e99a6bb8af0313fdf470e605ba3ccd30a2988179";};
     dependencies = {
-      async_graphql_value = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".async-graphql-value."7.0.1" { inherit profileName; }).out;
+      async_graphql_value = (rustPackages."git+https://github.com/async-graphql/async-graphql".async-graphql-value."7.0.1" { inherit profileName; }).out;
       pest = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".pest."2.7.6" { inherit profileName; }).out;
       serde = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".serde."1.0.196" { inherit profileName; }).out;
       serde_json = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".serde_json."1.0.113" { inherit profileName; }).out;
     };
   });
   
-  "registry+https://github.com/rust-lang/crates.io-index".async-graphql-value."7.0.1" = overridableMkRustCrate (profileName: rec {
+  "git+https://github.com/async-graphql/async-graphql".async-graphql-value."7.0.1" = overridableMkRustCrate (profileName: rec {
     name = "async-graphql-value";
     version = "7.0.1";
-    registry = "registry+https://github.com/rust-lang/crates.io-index";
-    src = fetchCratesIo { inherit name version; sha256 = "7cf4d4e86208f4f9b81a503943c07e6e7f29ad3505e6c9ce6431fe64dc241681"; };
+    registry = "git+https://github.com/async-graphql/async-graphql";
+    src = fetchCrateGit {
+      url = https://github.com/async-graphql/async-graphql;
+      name = "async-graphql-value";
+      version = "7.0.1";
+      rev = "e99a6bb8af0313fdf470e605ba3ccd30a2988179";};
     dependencies = {
       bytes = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".bytes."1.5.0" { inherit profileName; }).out;
       indexmap = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".indexmap."2.2.1" { inherit profileName; }).out;
@@ -278,7 +294,7 @@ in
     registry = "unknown";
     src = fetchCrateLocal workspaceSrc;
     dependencies = {
-      async_graphql = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".async-graphql."7.0.1" { inherit profileName; }).out;
+      async_graphql = (rustPackages."git+https://github.com/async-graphql/async-graphql".async-graphql."7.0.1" { inherit profileName; }).out;
     };
   });
   
